@@ -16,8 +16,16 @@ resource "aws_lightsail_instance" "custom" {
   availability_zone = "us-east-1b"
   blueprint_id      = "amazon_linux_2"
   bundle_id         = "nano_3_0"
-  user_data         = "sudo yum install -y httpd && sudo systemctl start httpd && sudo systemctl enable httpd && echo '<h1>Deployed via Terraform</h1>' | sudo tee /var/www/html/index.html"
   key_pair_name     = "sucess-key"
+
+  # Fixed user_data using HEREDOC
+  user_data = <<-EOF
+              sudo yum install -y httpd
+              sudo systemctl start httpd
+              sudo systemctl enable httpd
+              echo '<h1>Deployed via Terraform</h1>' | sudo tee /var/www/html/index.html
+              EOF
+
   tags = {
     Team       = "Devops"
     env        = "dev"
@@ -25,24 +33,18 @@ resource "aws_lightsail_instance" "custom" {
   }
 }
 
-
 output "My_user_data" {
   value = aws_lightsail_instance.custom.user_data
-  
-}
-output "my-public-ip" {
-  value = aws_lightsail_instance.custom.public_ip_address
-  
 }
 
+output "my-public-ip" {
+  value = aws_lightsail_instance.custom.public_ip_address
+}
 
 output "My_username" {
   value = aws_lightsail_instance.custom.username
-  
 }
-
 
 output "My_key" {
   value = aws_lightsail_instance.custom.key_pair_name
-
-  }
+}
