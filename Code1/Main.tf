@@ -18,3 +18,11 @@ resource "aws_iam_group" "developers1" {
 resource "aws_iam_user" "lb" {
   name = "loadbalancer1"
 }
+
+resource "aws_iam_user" "user1" {
+  name = "ansibleuser"
+}
+
+resource "aws_iam_group" "group1" {
+  name = "ansiblegroup"
+}
